@@ -12,28 +12,29 @@ module.exports = app => {
   router.post('/seq/nextval', controller.seq.nextval);
 
   // TODO: 成员管理接口
-  router.post('/user/create', controller.user.info.create);
-  router.get('/user/get', controller.user.info.fetch);
-  router.post('/user/update', controller.user.info.update);
-  router.get('/user/delete', controller.user.info.delete);
-  router.post('/user/batchdelete', controller.user.info.batchdelete);
-  router.get('/user/simplelist', controller.user.info.simplelist);
-  router.get('/user/list', controller.user.info.list);
-
+  router.post('/user/create', controller.user.create);
+  router.get('/user/get', controller.user.fetch);
+  router.post('/user/update', controller.user.update);
+  router.get('/user/delete', controller.user.delete);
+  router.post('/user/batchdelete', controller.user.batchdelete);
+  router.get('/user/simplelist', controller.user.simplelist);
+  router.get('/user/list', controller.user.list);
+  router.post('/user/passwd', controller.user.passwd);
+  
   // TODO: 部门管理接口
-  router.post('/dept/create', controller.user.dept.create);
-  router.post('/dept/update', controller.user.dept.update);
-  router.get('/dept/delete', controller.user.dept.delete);
-  router.get('/dept/list', controller.user.dept.list);
+  router.post('/dept/create', controller.dept.create);
+  router.post('/dept/update', controller.dept.update);
+  router.get('/dept/delete', controller.dept.delete);
+  router.get('/dept/list', controller.dept.list);
 
   // TODO: 标签管理接口
-  router.post('/tag/create', controller.user.tag.create);
-  router.get('/tag/get', controller.user.tag.fetch);
-  router.post('/tag/update', controller.user.tag.update);
-  router.get('/tag/delete', controller.user.tag.delete);
-  router.post('/tag/addtagusers', controller.user.tag.addtagusers);
-  router.get('/tag/deltagusers', controller.user.tag.deltagusers);
-  router.get('/tag/list', controller.user.tag.list);
+  router.post('/tag/create', controller.tag.create);
+  router.get('/tag/get', controller.tag.fetch);
+  router.post('/tag/update', controller.tag.update);
+  router.get('/tag/delete', controller.tag.delete);
+  router.post('/tag/addtagusers', controller.tag.addtagusers);
+  router.get('/tag/deltagusers', controller.tag.deltagusers);
+  router.get('/tag/list', controller.tag.list);
 
   // TODO: 自动配置路由,将所有以‘Action’结尾的方法自动进行路由注册
   Object.keys(app.controller).forEach(key => {

@@ -1,8 +1,12 @@
 'use strict';
 
 const assert = require('assert');
+const is = require('is-type-of');
 const { BusinessError, ErrorCode } = require('naf-core').Error;
 const NafService = require('./base');
+
+const INFO_FULL = 'userid name mobile department order position gender email isleader enable telephone attrs status';
+const INFO_SIMPLE = 'userid name';
 
 class UserinfoService extends NafService {
   constructor(ctx) {
@@ -35,7 +39,7 @@ class UserinfoService extends NafService {
   }
 
   async fetch(userid) {
-    const res = await this._findOne({ userid, tenant: this.tenant });
+    const res = await this._findOne({ userid, tenant: this.tenant }, INFO_FULL);
     return res;
   }
 
@@ -69,10 +73,19 @@ class UserinfoService extends NafService {
       rs = rs.map(p => p.id);
       depts = depts.concat(...rs);
     }
-    let query = this.model.where({ tenant: this.tenant, department: { $elemMatch: { $in: depts } } });
-    if (simple) query = query.select({ userid: 1, name: 1, department: 1 });
-    const res = await query.exec();
+    const res = await this.model.where({ tenant: this.tenant, department: { $elemMatch: { $in: depts } } })
+      .select(simple ? INFO_SIMPLE : INFO_FULL)
+      .exec();
     return res;
+  }
+
+  async passwd(userid, update) {
+    assert(userid);
+    assert(update);
+    if (is.string(update)) update = { newpass: update };
+    const { newpass: password, retry } = update;
+    update = this._trimData({ password, retry });
+    return await this._update({ userid }, { passwd: update });
   }
 
 }

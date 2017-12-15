@@ -1,5 +1,6 @@
 'use strict';
 const { NullableString, RequiredString } = require('../util/schema')
+const Schema = require('mongoose').Schema;
 
 const SchemaDefine = {
   userid: RequiredString(64),
@@ -14,6 +15,7 @@ const SchemaDefine = {
   position: NullableString(64),
   isleader: Number,
   enable: Number,
+  passwd: Object,
   tenant: RequiredString(64),
 };
 

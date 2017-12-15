@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const Service = require('egg').Service;
+const is = require('is-type-of');
 
 class NafService extends Service {
   constructor(ctx, name) {
@@ -20,7 +21,7 @@ class NafService extends Service {
   async _create(data, model) {
     assert(data);
     model = model || this.model;
-    return await model.create({ ...data, tenant: this.tenant }).exec();
+    return await model.create({ ...data, tenant: this.tenant });
   }
   async _findById(_id, model) {
     model = model || this.model;
@@ -44,17 +45,23 @@ class NafService extends Service {
   async _findOneAndUpdate(conditions, update, options = { new: true }, model) {
     conditions.tenant = this.tenant;
     model = model || this.model;
-    return await model.findOneAndUpdate(conditions, update, options).exec();
+    return await model.findOneAndUpdate(conditions, { $set: this._trimData(update) }, options).exec();
   }
   async _update(conditions, update, options, model) {
     conditions.tenant = this.tenant;
     model = model || this.model;
-    return await model.update(conditions, update, options).exec();
+    return await model.update(conditions, { $set: this._trimData(update) }, options).exec();
   }
   async _count(conditions, model) {
     conditions.tenant = this.tenant;
     model = model || this.model;
     return await model.count(conditions).exec();
+  }
+  _trimData(data) {
+    for (const key in data) {
+      if (is.undefined(data[key])) delete data[key];
+    }
+    return data;
   }
 }
 

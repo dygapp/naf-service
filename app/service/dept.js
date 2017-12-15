@@ -9,7 +9,7 @@ class DepartmentService extends NafService {
   constructor(ctx) {
     super(ctx, 'naf_user_dept');
     this.model = ctx.model.Dept;
-    this.user = ctx.service.user;
+    this.nUser = ctx.model.User;
   }
 
   async create(id, name, parentid = 0, order = 0) {
@@ -43,7 +43,7 @@ class DepartmentService extends NafService {
       throw new BusinessError(60006, '部门下存在子部门');
     }
     // TODO: 检查是否包含成员
-    count = await this.user._count({ department: { $elemMatch: { $eq: id } } });
+    count = await this._count({ department: { $elemMatch: { $eq: id } } }, this.mUser);
     if (count > 0) {
       throw new BusinessError(60005, '部门下存在成员');
     }

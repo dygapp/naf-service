@@ -1,6 +1,6 @@
 'use strict';
 
-const { NafError, BusinessError } = require('naf-core');
+const { NafError, BusinessError } = require('naf-core').Error;
 const { ValidationError } = require('mongoose').Error;
 
 module.exports = {

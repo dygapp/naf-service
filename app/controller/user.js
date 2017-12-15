@@ -13,8 +13,8 @@ class UserController extends Controller {
 
   async create() {
     const { ctx } = this;
-    const { userid, name } = ctx.request.body;
-    const res = await ctx.model.User.create({ userid, name });
+    const { userid, name, mobile } = ctx.request.body;
+    const res = await this.service.create({ userid, name, mobile });
     console.log(res);
     this.ctx.body = { errcode: 0, errmsg: 'created' };
   }
@@ -45,6 +45,13 @@ class UserController extends Controller {
   async list() {
     const { ctx } = this;
     ctx.body = await ctx.model.User.find({}).exec();
+  }
+
+  // POST
+  async passwd() {
+    const { ctx } = this;
+    const { userid, newpass } = ctx.request.body;
+    ctx.body = await this.service.passwd(userid, newpass);
   }
 }
 
