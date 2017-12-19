@@ -12,35 +12,48 @@ class TagController extends Controller {
     const { tag: service } = ctx.service;
     const { tagid, tagname } = ctx.request.body;
     const res = await service.create(tagid, tagname);
-    this.ctx.body = { errcode: 0, errmsg: 'created', tagid: res.tagid };
+    this.ok('created', { tagid: res.tagid });
   }
 
+  // GET 获取标签成员
   async fetch() {
-    const { ctx } = this;
-    const { userid } = ctx.query;
-    const res = await ctx.model.Tag.findOne({ userid }).exec();
-    ctx.body = res || 'none';
+    const { tagid } = this.ctx.query;
+    const res = await this.service.fetchUsers(tagid);
+    this.ok(res);
   }
 
+  // POST 更新标签名字
   async update() {
-    this.ctx.body = 'hi, user!';
+    const { tagid, tagname } = this.ctx.request.body;
+    await this.service.update(tagid, tagname);
+    this.ok('updated');
   }
 
+  // GET 删除标签
   async delete() {
-    this.ctx.body = 'hi, user!';
+    const { tagid } = this.ctx.query;
+    await this.service.delete(tagid);
+    this.ok();
   }
 
+  // POST 增加标签成员
   async addtagusers() {
-    this.ctx.body = 'hi, user!';
+    const { tagid, userlist, partylist } = this.ctx.request.body;
+    await this.service.addtagusers(tagid, userlist, partylist);
+    this.ok('updated');
   }
 
+  // POST 删除标签成员
   async deltagusers() {
-    this.ctx.body = 'hi, user!';
+    const { tagid, userlist, partylist } = this.ctx.request.body;
+    await this.service.deltagusers(tagid, userlist, partylist);
+    this.ok('deleted');
   }
 
+  // 获取标签列表
   async list() {
-    const { ctx } = this;
-    ctx.body = await ctx.model.Tag.find({}).exec();
+    const res = await this.service.list();
+    this.ok({ taglist: res });
   }
 }
 

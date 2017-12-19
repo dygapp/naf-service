@@ -1,7 +1,6 @@
 'use strict';
-const { RequiredString } = require('../util/schema')
+const { RequiredString } = require('../util/schema');
 const Schema = require('mongoose').Schema;
-const ObjectId = Schema.Types.ObjectId;
 
 const SchemaDefine = {
   tagid: RequiredString(64),
@@ -10,8 +9,10 @@ const SchemaDefine = {
   partylist: [ Number ],
   tenant: RequiredString(64),
 };
-
+const schema = new Schema(SchemaDefine);
+schema.index({ tenant: 1, tarid: 1 });
+schema.index({ tenant: 1, tarname: 1 });
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('Tag', new mongoose.Schema(SchemaDefine), 'naf_user_tag');
+  return mongoose.model('Tag', schema, 'naf_user_tag');
 };

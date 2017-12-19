@@ -8,8 +8,11 @@ class HomeController extends Controller {
   }
 
   async info(...args) {
-
     this.ctx.body = { args };
+  }
+
+  async echoAction() {
+    this.ok({ requestparam: this.ctx.requestparam });
   }
 
   async dataAction() {

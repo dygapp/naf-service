@@ -1,5 +1,5 @@
 'use strict';
-const { NullableString, RequiredString } = require('../util/schema')
+const { NullableString, RequiredString } = require('../util/schema');
 const Schema = require('mongoose').Schema;
 
 const SchemaDefine = {
@@ -18,8 +18,9 @@ const SchemaDefine = {
   passwd: Object,
   tenant: RequiredString(64),
 };
+const schema = new Schema(SchemaDefine);
 
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('User', new mongoose.Schema(SchemaDefine), 'naf_user_info');
+  return mongoose.model('User', schema, 'naf_user_info');
 };

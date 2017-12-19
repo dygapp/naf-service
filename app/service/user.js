@@ -39,7 +39,7 @@ class UserinfoService extends NafService {
   }
 
   async fetch(userid) {
-    const res = await this._findOne({ userid, tenant: this.tenant }, INFO_FULL);
+    const res = await this._findOne({ userid }, INFO_FULL);
     return res;
   }
 
@@ -83,9 +83,8 @@ class UserinfoService extends NafService {
     assert(userid);
     assert(update);
     if (is.string(update)) update = { newpass: update };
-    const { newpass: password, retry } = update;
-    update = this._trimData({ password, retry });
-    return await this._update({ userid }, { passwd: update });
+    const { newpass: passwd, retry } = update;
+    return await this._update({ userid }, { passwd, retry });
   }
 
 }

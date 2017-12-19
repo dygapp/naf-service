@@ -20,7 +20,7 @@ module.exports = app => {
   router.get('/user/simplelist', controller.user.simplelist);
   router.get('/user/list', controller.user.list);
   router.post('/user/passwd', controller.user.passwd);
-  
+
   // TODO: 部门管理接口
   router.post('/dept/create', controller.dept.create);
   router.post('/dept/update', controller.dept.update);
@@ -33,7 +33,7 @@ module.exports = app => {
   router.post('/tag/update', controller.tag.update);
   router.get('/tag/delete', controller.tag.delete);
   router.post('/tag/addtagusers', controller.tag.addtagusers);
-  router.get('/tag/deltagusers', controller.tag.deltagusers);
+  router.post('/tag/deltagusers', controller.tag.deltagusers);
   router.get('/tag/list', controller.tag.list);
 
   // TODO: 自动配置路由,将所有以‘Action’结尾的方法自动进行路由注册

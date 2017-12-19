@@ -14,6 +14,9 @@ module.exports = {
     }
     return this[TENANT];
   },
+  get requestparam() {
+    return { ...this.query, ...this.request.body };
+  },
 
   // 返回JSON结果
   json(errcode = 0, errmsg = 'ok', data = {}) {
@@ -28,6 +31,9 @@ module.exports = {
   },
   fail(errcode, errmsg, details) {
     this.json(errcode, errmsg, { details });
+  },
+  ok(message, data) {
+    this.success(message, data);
   },
 
 };
