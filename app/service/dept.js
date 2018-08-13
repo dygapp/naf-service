@@ -38,7 +38,7 @@ class DepartmentService extends NafService {
     assert(id);
 
     // TODO: 检查是否包含子部门
-    let count = await this._count({ parentid: id, tenant: this.tenant });
+    let count = await this._count({ parentid: id });
     if (count > 0) {
       throw new BusinessError(60006, '部门下存在子部门');
     }

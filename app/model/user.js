@@ -16,11 +16,10 @@ const SchemaDefine = {
   isleader: Number,
   enable: Number,
   passwd: Object,
-  tenant: RequiredString(64),
 };
 const schema = new Schema(SchemaDefine);
 
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('User', schema, 'naf_user_info');
+  return mongoose.model('User', schema, 'naf_user');
 };
