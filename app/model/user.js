@@ -21,5 +21,5 @@ const schema = new Schema(SchemaDefine);
 
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('User', schema, 'naf_user');
+  return mongoose.model('User', schema, 'naf_user_info');
 };
