@@ -52,7 +52,7 @@ class UserinfoService extends NafService {
     const { name, department, order, position, gender, email, isleader, enable, telephone, attrs } = update;
 
     // TODO:保存数据
-    const entity = await this._findOneAndUpdate({ userid, tenant: this.tenant },
+    const entity = await this._findOneAndUpdate({ userid },
       { name, department, order, position, gender, email, isleader, enable, telephone, attrs },
       { new: true });
     return entity;
@@ -73,7 +73,7 @@ class UserinfoService extends NafService {
       rs = rs.map(p => p.id);
       depts = depts.concat(...rs);
     }
-    const res = await this.model.where({ tenant: this.tenant, department: { $elemMatch: { $in: depts } } })
+    const res = await this.model.where({ department: { $elemMatch: { $in: depts } } })
       .select(simple ? INFO_SIMPLE : INFO_FULL)
       .exec();
     return res;

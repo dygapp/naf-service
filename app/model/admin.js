@@ -2,6 +2,7 @@
 const { RequiredString } = require('../util/schema');
 const Schema = require('mongoose').Schema;
 
+// 管理员
 const SchemaDefine = {
   id: { type: Number, required: true, index: true },
   parentid: { type: Number, required: true, index: true },
@@ -14,5 +15,5 @@ schema.index({ parentid: 1 });
 
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('Department', schema, 'naf_dept');
+  return mongoose.model('Admin', schema, 'naf_admin');
 };

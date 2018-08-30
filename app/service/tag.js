@@ -45,7 +45,7 @@ class TagService extends NafService {
     assert(tagid);
     assert(is.array(userlist));
     assert(is.array(partylist));
-    return await this.model.findOneAndUpdate({ tagid, tenant: this.tenant }, { $push: {
+    return await this.model.findOneAndUpdate({ tagid }, { $push: {
       userlist: { $each: userlist },
       partylist: { $each: partylist },
     } });
@@ -56,7 +56,7 @@ class TagService extends NafService {
     assert(tagid);
     assert(is.array(userlist));
     assert(is.array(partylist));
-    return await this.model.findOneAndUpdate({ tagid, tenant: this.tenant }, { $pull: {
+    return await this.model.findOneAndUpdate({ tagid }, { $pull: {
       userlist: { $in: userlist },
       partylist: { $in: partylist },
     } });

@@ -8,5 +8,5 @@ const SchemaDefine = {
 
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('Sequence', new mongoose.Schema(SchemaDefine), 'naf_sequence');
+  return mongoose.model('Sequence', new mongoose.Schema(SchemaDefine), 'naf_seq');
 };

@@ -26,6 +26,7 @@ module.exports = app => {
   router.post('/dept/update', controller.dept.update);
   router.get('/dept/delete', controller.dept.delete);
   router.get('/dept/list', controller.dept.list);
+  router.get('/dept/load', controller.dept.load);
 
   // TODO: 标签管理接口
   router.post('/tag/create', controller.tag.create);
