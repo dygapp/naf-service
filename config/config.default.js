@@ -21,8 +21,13 @@ module.exports = appInfo => {
 
   // mongoose config
   config.mongoose = {
-    url: 'mongodb://127.0.0.1/naf',
-    options: {},
+    url: 'mongodb://localhost:27017/naf',
+    options: {
+      useNewUrlParser: true,
+      user: 'root',
+      pass: 'Ziyouyanfa#@!',
+      authSource: 'admin',
+    },
   };
 
   config.onerror = ErrorConfig;
