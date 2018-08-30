@@ -2,7 +2,6 @@
 
 // had enabled by egg
 // exports.static = true;
-exports.mongoose = {
+exports.multiTenancy = {
   enable: true,
-  package: 'egg-mongoose',
 };
