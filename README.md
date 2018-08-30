@@ -1,5 +1,5 @@
 # naf common service
-multi-tenancy applicaiton platform
+multi-tenancy applicaiton platform user service
 
 ## api test
 
