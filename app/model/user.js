@@ -16,6 +16,7 @@ const SchemaDefine = {
   isleader: Number,
   enable: Number,
   passwd: Object,
+  weixin: NullableString(64),
 };
 const schema = new Schema(SchemaDefine);
 
