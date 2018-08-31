@@ -1,5 +1,5 @@
 'use strict';
-const { RequiredString } = require('../util/schema');
+const { RequiredString } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;
 
 // 管理员

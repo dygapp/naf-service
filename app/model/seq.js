@@ -1,12 +1,7 @@
 'use strict';
-const { RequiredString } = require('../util/schema');
-
-const SchemaDefine = {
-  _id: RequiredString(64),
-  value: Number,
-};
+const SchemaDefine = require('naf-framework-mongoose/lib/model/seq');
 
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('Sequence', new mongoose.Schema(SchemaDefine), 'naf_seq');
+  return mongoose.model('Seq', new mongoose.Schema(SchemaDefine), 'naf_seq');
 };

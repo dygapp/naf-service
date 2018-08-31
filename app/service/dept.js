@@ -1,15 +1,17 @@
 'use strict';
+// FOR egg extend types define
+require('naf-framework-mongoose');
 
 const assert = require('assert');
-const util = require('core-util-is');
+const { isNullOrUndefined } = require('naf-core').Util;
 const { BusinessError, ErrorCode } = require('naf-core').Error;
-const NafService = require('./base');
+const { NafService } = require('naf-framework-mongoose').Services;
 
 class DepartmentService extends NafService {
   constructor(ctx) {
     super(ctx, 'naf_user_dept');
-    this.model = ctx.model.Dept;
-    this.nUser = ctx.model.User;
+    this.model = this.ctx.model.Dept;
+    this.mUser = this.ctx.model.User;
   }
 
   async create(id, name, parentid = 0, order = 0) {
@@ -27,7 +29,7 @@ class DepartmentService extends NafService {
     const { name, parentid, order } = update;
     // TODO:检查数据是否存在
     const entity = await this._findOne({ id });
-    if (util.isNullOrUndefined(entity)) throw new BusinessError(ErrorCode.DATA_NOT_EXIST);
+    if (isNullOrUndefined(entity)) throw new BusinessError(ErrorCode.DATA_NOT_EXIST);
 
     // TODO: 修改数据
     entity.set({ name, parentid, order });
@@ -38,17 +40,17 @@ class DepartmentService extends NafService {
     assert(id);
 
     // TODO: 检查是否包含子部门
-    let count = await this._count({ parentid: id });
+    let count = await this.model.count({ parentid: id }).exec();
     if (count > 0) {
       throw new BusinessError(60006, '部门下存在子部门');
     }
     // TODO: 检查是否包含成员
-    count = await this._count({ department: { $elemMatch: { $eq: id } } }, this.mUser);
+    count = await this.mUser.count({ department: { $elemMatch: { $eq: id } } }).exec();
     if (count > 0) {
       throw new BusinessError(60005, '部门下存在成员');
     }
 
-    await this._remove({ id });
+    await this.model.remove({ id }).exec();
   }
 
   async list(id = 0) {

@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const is = require('is-type-of');
-const NafService = require('./base');
+const { NafService } = require('naf-framework-mongoose').Services;
 const { BusinessError, ErrorCode } = require('naf-core').Error;
 
 class TagService extends NafService {

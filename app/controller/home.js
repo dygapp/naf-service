@@ -1,5 +1,8 @@
 'use strict';
 
+// FOR egg extend types define
+require('naf-framework-mongoose');
+
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
@@ -21,7 +24,7 @@ class HomeController extends Controller {
   }
 
   async create() {
-    const { Demo } = this.ctx.tmodel;
+    const { Demo } = this.ctx.model;
     const { key, val } = this.ctx.query;
     let doc = await Demo.create({ key, val });
     doc = await doc.save();
@@ -30,10 +33,10 @@ class HomeController extends Controller {
 
   async list() {
     // console.log('ctx.tenant: ', this.ctx.tenant);
-    const { Demo } = this.ctx.tmodel;
+    const { Demo } = this.ctx.model;
     const rs = await Demo.find({}).exec();
     this.ctx.success({ data: rs });
-    // console.log('model.Demo: ', Demo);
+    console.log('model.Demo: ', Demo.modelName);
   }
 }
 

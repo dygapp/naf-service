@@ -3,7 +3,7 @@
 const assert = require('assert');
 const is = require('is-type-of');
 const { BusinessError, ErrorCode } = require('naf-core').Error;
-const NafService = require('./base');
+const { NafService } = require('naf-framework-mongoose').Services;
 
 const INFO_FULL = 'userid name mobile department order position gender email isleader enable telephone attrs status';
 const INFO_SIMPLE = 'userid name';

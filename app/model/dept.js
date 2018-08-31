@@ -1,5 +1,5 @@
 'use strict';
-const { RequiredString } = require('../util/schema');
+const { RequiredString } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;
 
 const SchemaDefine = {
@@ -8,7 +8,7 @@ const SchemaDefine = {
   name: RequiredString(64),
   order: Number,
 };
-const schema = new Schema(SchemaDefine);
+const schema = new Schema(SchemaDefine, { timestamps: true, 'multi-tenancy': true });
 schema.index({ id: 1 });
 schema.index({ parentid: 1 });
 
