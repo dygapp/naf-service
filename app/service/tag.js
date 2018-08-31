@@ -1,8 +1,10 @@
 'use strict';
+// FOR egg extend types define
+require('naf-framework-mongoose');
 
 const assert = require('assert');
 const is = require('is-type-of');
-const { NafService } = require('naf-framework-mongoose').Services;
+const { NafService } = require('naf-framework-mongoose/lib/service');
 const { BusinessError, ErrorCode } = require('naf-core').Error;
 
 class TagService extends NafService {

@@ -1,9 +1,11 @@
 'use strict';
+// FOR egg extend types define
+require('naf-framework-mongoose');
 
 const assert = require('assert');
 const is = require('is-type-of');
 const { BusinessError, ErrorCode } = require('naf-core').Error;
-const { NafService } = require('naf-framework-mongoose').Services;
+const { NafService } = require('naf-framework-mongoose/lib/service');
 
 const INFO_FULL = 'userid name mobile department order position gender email isleader enable telephone attrs status';
 const INFO_SIMPLE = 'userid name';
@@ -11,7 +13,7 @@ const INFO_SIMPLE = 'userid name';
 class UserinfoService extends NafService {
   constructor(ctx) {
     super(ctx, 'naf_user_info');
-    this.model = ctx.model.User;
+    this.model = this.ctx.model.User;
     this.dept = this.ctx.service.dept;
   }
 
