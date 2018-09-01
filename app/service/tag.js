@@ -1,6 +1,4 @@
 'use strict';
-// FOR egg extend types define
-require('naf-framework-mongoose');
 
 const assert = require('assert');
 const is = require('is-type-of');
@@ -10,35 +8,34 @@ const { BusinessError, ErrorCode } = require('naf-core').Error;
 class TagService extends NafService {
   constructor(ctx) {
     super(ctx, 'naf_user_tag');
-    this.model = ctx.model.Tag;
-    this.user = ctx.service.user;
-    this.dept = ctx.service.dept;
+    this.model = this.ctx.model.Tag;
+    this.mUser = this.ctx.model.User;
   }
 
   async create(tagid, tagname) {
     assert(tagname);
     tagid = tagid || await this.nextId();
-    const res = await this._create({ tagid, tagname });
+    const res = await this.model.create({ tagid, tagname });
     return res;
   }
 
   async update(tagid, tagname) {
     assert(tagid);
-    const res = await this._findOneAndUpdate({ tagid }, { tagname });
+    const res = await this.model.findOneAndUpdate({ tagid }, { tagname }).exec();
     return res;
   }
 
   async delete(tagid) {
     assert(tagid);
-    await this._remove({ tagid });
+    await this.model.remove({ tagid }).exec();
   }
 
   // 获取标签成员
   async fetchUsers(tagid) {
     assert(tagid);
-    const entity = await this._findOne({ tagid });
+    const entity = await this.model.findOne({ tagid }).exec();
     if (!entity) throw new BusinessError(ErrorCode.DATA_NOT_EXIST);
-    const userlist = await this.user._find({ userid: { $in: entity.userlist } }, 'userid name');
+    const userlist = await this.mUser.find({ userid: { $in: entity.userlist } }, 'userid name').exec();
     return { tagname: entity.tagname, userlist, partylist: entity.partylist };
   }
 
@@ -50,7 +47,7 @@ class TagService extends NafService {
     return await this.model.findOneAndUpdate({ tagid }, { $push: {
       userlist: { $each: userlist },
       partylist: { $each: partylist },
-    } });
+    } }).exec();
   }
 
   // 将用户或部门从标签删除
@@ -61,12 +58,12 @@ class TagService extends NafService {
     return await this.model.findOneAndUpdate({ tagid }, { $pull: {
       userlist: { $in: userlist },
       partylist: { $in: partylist },
-    } });
+    } }).exec();
   }
 
   // 获得标签列表
   async list() {
-    return await this._find({}, 'tagid tagname');
+    return await this.model.find({}, 'tagid tagname').exec();
   }
 }
 

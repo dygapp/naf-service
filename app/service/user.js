@@ -1,6 +1,4 @@
 'use strict';
-// FOR egg extend types define
-require('naf-framework-mongoose');
 
 const assert = require('assert');
 const is = require('is-type-of');
@@ -26,22 +24,22 @@ class UserinfoService extends NafService {
     const status = 1;
 
     // TODO:检查useridh和mobile
-    let count = await this._count({ userid });
+    let count = await this.model.count({ userid }).exec();
     if (count > 0) {
       throw new BusinessError(ErrorCode.DATA_EXISTED, '用户ID已存在');
     }
-    count = await this._count({ mobile });
+    count = await this.model.count({ mobile }).exec();
     if (count > 0) {
       throw new BusinessError(ErrorCode.DATA_EXISTED, '手机号已存在');
     }
 
     // TODO:保存数据
-    const res = await this._create({ userid, name, mobile, department, order, position, gender, email, isleader, enable, telephone, attrs, status });
+    const res = await this.model.create({ userid, name, mobile, department, order, position, gender, email, isleader, enable, telephone, attrs, status });
     return res;
   }
 
   async fetch(userid) {
-    const res = await this._findOne({ userid }, INFO_FULL);
+    const res = await this.model.findOne({ userid }, INFO_FULL).exec();
     return res;
   }
 
@@ -54,18 +52,18 @@ class UserinfoService extends NafService {
     const { name, department, order, position, gender, email, isleader, enable, telephone, attrs } = update;
 
     // TODO:保存数据
-    const entity = await this._findOneAndUpdate({ userid },
+    const entity = await this.model.findOneAndUpdate({ userid },
       { name, department, order, position, gender, email, isleader, enable, telephone, attrs },
-      { new: true });
+      { new: true }).exec();
     return entity;
   }
 
   async batchdelete(useridlist) {
-    await this._remove({ userid: { $in: useridlist } });
+    await this.model.remove({ userid: { $in: useridlist } }).exec();
   }
 
   async delete(userid) {
-    await this._remove({ userid });
+    await this.model.remove({ userid }).exec();
   }
 
   async list(department_id = 0, fetch_child = 0, simple = 1) {
@@ -86,7 +84,7 @@ class UserinfoService extends NafService {
     assert(update);
     if (is.string(update)) update = { newpass: update };
     const { newpass: passwd, retry } = update;
-    return await this._update({ userid }, { passwd, retry });
+    return await this.model.update({ userid }, { passwd, retry }).exec();
   }
 
 }

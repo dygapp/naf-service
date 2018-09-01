@@ -1,6 +1,4 @@
 'use strict';
-// FOR egg extend types define
-require('naf-framework-mongoose');
 
 const assert = require('assert');
 const { isNullOrUndefined } = require('naf-core').Util;
@@ -12,7 +10,6 @@ class DepartmentService extends NafService {
     super(ctx, 'naf_user_dept');
     this.model = this.ctx.model.Dept;
     this.mUser = this.ctx.model.User;
-    this.model;
   }
 
   async create(id, name, parentid = 0, order = 0) {
