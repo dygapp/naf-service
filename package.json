@@ -9,7 +9,7 @@
   "dependencies": {
     "egg": "^2.10.0",
     "egg-scripts": "^2.9.1",
-    "naf-framework-mongoose": "^0.3.16"
+    "naf-framework-mongoose": "^0.3.17"
   },
   "devDependencies": {
     "autod": "^3.0.1",
