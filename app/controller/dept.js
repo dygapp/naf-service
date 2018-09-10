@@ -3,8 +3,8 @@
 const Controller = require('egg').Controller;
 
 class DepartmentController extends Controller {
-  constructor() {
-    super();
+  constructor(ctx) {
+    super(ctx);
     // const DepartmentService = require('../../service/dept');
     // this.service = new DepartmentService(this.ctx);
     this.service = this.ctx.service.dept;
@@ -14,14 +14,16 @@ class DepartmentController extends Controller {
   async create() {
     const { name, id, parentid, order } = this.ctx.request.body;
     const res = await this.service.create(id, name, parentid, order);
-    this.ctx.ok('created', { id: res.partyid });
+    this.ctx.ok('created', { data: res });
   }
 
   // POST
   async update() {
-    const { name, id, parentid, order } = this.ctx.request.body;
-    await this.service.update(id, { name, parentid, order });
-    this.ctx.ok('updated');
+    this.ctx.logger.debug(`reuqest /detp/update: ${this.ctx.query}`);
+    const { id } = this.ctx.query;
+    const { name, id: _id, parentid, order } = this.ctx.request.body;
+    const res = await this.service.update(id || _id, { name, parentid, order });
+    this.ctx.ok('updated', { data: res });
   }
 
   // GET
@@ -33,9 +35,9 @@ class DepartmentController extends Controller {
 
   // GET
   async list() {
-    const { id } = this.ctx.query;
-    const list = await this.service.list(id);
-    this.ctx.body = { errcode: 0, errmsg: 'ok', department: list };
+    const { id, parentid, recursive } = this.ctx.query;
+    const list = await this.service.list(id, parentid, recursive);
+    this.ctx.body = { errcode: 0, errmsg: 'ok', data: list };
   }
 }
 

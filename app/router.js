@@ -7,8 +7,6 @@ module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
   router.get('/info', controller.home.info);
-  router.get('/demo/create', controller.home.create);
-  router.get('/demo/list', controller.home.list);
 
   // TODO: 序列管理接口
   router.post('/seq/nextval', controller.seq.nextval);
@@ -27,7 +25,7 @@ module.exports = app => {
   router.post('/dept/create', controller.dept.create);
   router.post('/dept/update', controller.dept.update);
   router.get('/dept/delete', controller.dept.delete);
-  router.get('/dept/list', controller.dept.list);
+  router.get('/dept/list/:id?', controller.dept.list);
 
   // TODO: 标签管理接口
   router.post('/tag/create', controller.tag.create);

@@ -27,7 +27,7 @@ class TagService extends NafService {
 
   async delete(tagid) {
     assert(tagid);
-    await this.model.remove({ tagid }).exec();
+    await this.model.deleteOne({ tagid }).exec();
   }
 
   // 获取标签成员

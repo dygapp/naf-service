@@ -24,11 +24,11 @@ class UserinfoService extends NafService {
     const status = 1;
 
     // TODO:检查useridh和mobile
-    let count = await this.model.count({ userid }).exec();
+    let count = await this.model.countDocuments({ userid }).exec();
     if (count > 0) {
       throw new BusinessError(ErrorCode.DATA_EXISTED, '用户ID已存在');
     }
-    count = await this.model.count({ mobile }).exec();
+    count = await this.model.countDocuments({ mobile }).exec();
     if (count > 0) {
       throw new BusinessError(ErrorCode.DATA_EXISTED, '手机号已存在');
     }
@@ -59,11 +59,11 @@ class UserinfoService extends NafService {
   }
 
   async batchdelete(useridlist) {
-    await this.model.remove({ userid: { $in: useridlist } }).exec();
+    await this.model.deleteMany({ userid: { $in: useridlist } }).exec();
   }
 
   async delete(userid) {
-    await this.model.remove({ userid }).exec();
+    await this.model.deleteOne({ userid }).exec();
   }
 
   async list(department_id = 0, fetch_child = 0, simple = 1) {

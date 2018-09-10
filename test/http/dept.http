@@ -1,0 +1,32 @@
+###
+# 创建部门
+POST http://localhost:7001/dept/create HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "parentid": 20000,
+  "name": "策划中心"
+}
+
+###
+# list
+GET http://localhost:7001/dept/list?recursive=1 HTTP/1.1
+Accept: application/json
+
+###
+# 删除
+GET http://localhost:7001/dept/delete?id=20003 HTTP/1.1
+#GET http://oa.chinahuian.cn/naf/code/mz/fetch?code=1 HTTP/1.1
+Accept: application/json
+
+###
+# 修改部门
+#POST http://localhost:7001/dept/update?id=20000 HTTP/1.1
+POST http://localhost:3000/smart/api/naf/dept/update?id=20000 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "测试分部1"
+}
