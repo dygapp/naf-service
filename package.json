@@ -7,7 +7,7 @@
     "framework": "naf-framework-mongoose"
   },
   "dependencies": {
-    "naf-framework-mongoose": "^0.3.22"
+    "naf-framework-mongoose": "^0.3.24"
   },
   "devDependencies": {
     "autod": "^3.0.1",
