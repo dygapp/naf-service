@@ -16,25 +16,23 @@ class UserinfoService extends NafService {
   }
 
   async create(data) {
-    const { userid, name, mobile, department = [ 0 ], order = [ 0 ], position, gender, email, isleader = 0, enable = 1, telephone, attrs } = data;
+    const { userid, name, mobile, department = [ 0 ], order = [ 0 ], position, gender, email, telephone, attrs, status } = data;
     // TODO:参数检查和默认参数处理
     assert(userid);
     assert(name);
-    assert(mobile);
-    const status = 1;
 
     // TODO:检查useridh和mobile
-    let count = await this.model.countDocuments({ userid }).exec();
+    const count = await this.model.countDocuments({ userid }).exec();
     if (count > 0) {
-      throw new BusinessError(ErrorCode.DATA_EXISTED, '用户ID已存在');
+      throw new BusinessError(ErrorCode.DATA_EXISTED, '用户帐号已存在');
     }
-    count = await this.model.countDocuments({ mobile }).exec();
-    if (count > 0) {
-      throw new BusinessError(ErrorCode.DATA_EXISTED, '手机号已存在');
-    }
+    // count = await this.model.countDocuments({ mobile }).exec();
+    // if (count > 0) {
+    //   throw new BusinessError(ErrorCode.DATA_EXISTED, '手机号已存在');
+    // }
 
     // TODO:保存数据
-    const res = await this.model.create({ userid, name, mobile, department, order, position, gender, email, isleader, enable, telephone, attrs, status });
+    const res = await this.model.create({ userid, name, mobile, department, order, position, gender, email, telephone, attrs, status });
     return res;
   }
 
@@ -45,15 +43,16 @@ class UserinfoService extends NafService {
 
   async update(userid, update) {
     // TODO:参数检查和默认参数处理
-    assert(userid);
     assert(update);
+    assert(userid || update.userid);
+    if (!userid) userid = update.userid;
 
     // TODO:提取可修改的字段
-    const { name, department, order, position, gender, email, isleader, enable, telephone, attrs } = update;
+    const { name, department, order, position, gender, email, telephone, attrs, status } = update;
 
     // TODO:保存数据
     const entity = await this.model.findOneAndUpdate({ userid },
-      { name, department, order, position, gender, email, isleader, enable, telephone, attrs },
+      { name, department, order, position, gender, email, telephone, attrs, status },
       { new: true }).exec();
     return entity;
   }
@@ -69,7 +68,7 @@ class UserinfoService extends NafService {
   async list(department_id = 0, fetch_child = 0, simple = 1) {
     let depts = [ department_id ];
     if (fetch_child) {
-      let rs = this.dept.findChildren(department_id);
+      let rs = await this.dept.findChildren(department_id);
       rs = rs.map(p => p.id);
       depts = depts.concat(...rs);
     }
@@ -83,8 +82,8 @@ class UserinfoService extends NafService {
     assert(userid);
     assert(update);
     if (is.string(update)) update = { newpass: update };
-    const { newpass: passwd, retry } = update;
-    return await this.model.update({ userid }, { passwd, retry }).exec();
+    const { newpass: password, retry } = update;
+    return await this.model.update({ userid }, { password, retry }).exec();
   }
 
 }

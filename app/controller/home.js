@@ -16,7 +16,7 @@ class HomeController extends Controller {
   }
 
   async echoAction() {
-    this.ok({ requestparam: this.ctx.requestparam });
+    this.ctx.ok({ requestparam: this.ctx.requestparam });
   }
 
   async dataAction() {
