@@ -29,12 +29,12 @@ module.exports = app => {
 
   // TODO: 标签管理接口
   router.post('/tag/create', controller.tag.create);
-  router.get('/tag/get', controller.tag.fetch);
   router.post('/tag/update', controller.tag.update);
   router.get('/tag/delete', controller.tag.delete);
+  router.get('/tag/list', controller.tag.list);
+  router.get('/tag/get', controller.tag.fetch);
   router.post('/tag/addtagusers', controller.tag.addtagusers);
   router.post('/tag/deltagusers', controller.tag.deltagusers);
-  router.get('/tag/list', controller.tag.list);
 
   // TODO: 自动配置路由,将所有以‘Action’结尾的方法自动进行路由注册
   Object.keys(app.controller).forEach(key => {
