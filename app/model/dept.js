@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * 部门（多租户）
+ */
 const { RequiredString } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;
 

@@ -7,6 +7,7 @@ module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
   router.get('/info', controller.home.info);
+  router.all('/api/login', controller.user.login);
 
   // TODO: 序列管理接口
   router.post('/seq/nextval', controller.seq.nextval);
@@ -35,6 +36,16 @@ module.exports = app => {
   router.get('/tag/get', controller.tag.fetch);
   router.post('/tag/addtagusers', controller.tag.addtagusers);
   router.post('/tag/deltagusers', controller.tag.deltagusers);
+
+  // TODO: 标签管理接口
+  router.post('/unit/create', controller.unit.create);
+  router.post('/unit/update', controller.unit.update);
+  router.get('/unit/delete', controller.unit.delete);
+  router.get('/unit/list', controller.unit.list);
+  router.post('/unit/create_user', controller.unit.createUser);
+  router.post('/unit/update_user', controller.unit.updateUser);
+  router.get('/unit/delete_user', controller.unit.deleteUser);
+  router.get('/unit/list_user', controller.unit.fetch);
 
   // TODO: 自动配置路由,将所有以‘Action’结尾的方法自动进行路由注册
   Object.keys(app.controller).forEach(key => {

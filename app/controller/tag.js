@@ -3,22 +3,26 @@
 const Controller = require('egg').Controller;
 
 class TagController extends Controller {
+  constructor(ctx) {
+    super(ctx);
+    this.service = this.ctx.service.tag;
+  }
+
   async index() {
     this.ctx.body = 'hi, user!';
   }
 
   async create() {
     const { ctx } = this;
-    const { tag: service } = ctx.service;
     const { tagid, tagname } = ctx.request.body;
-    const res = await service.create(tagid, tagname);
+    const res = await this.service.create(tagid, tagname);
     this.ctx.ok('created', { data: res });
   }
 
   // POST 更新标签名字
   async update() {
-    const { tagid, tagname } = this.ctx.request.body;
-    const res = await this.service.update(tagid, tagname);
+    const { tagid } = this.ctx.query;
+    const res = await this.service.update(tagid, this.ctx.request.body);
     this.ctx.ok('updated', { data: res });
   }
 
@@ -37,8 +41,7 @@ class TagController extends Controller {
 
   // GET 获取标签成员
   async fetch() {
-    const { tagid } = this.ctx.query;
-    const res = await this.service.fetchUsers(tagid);
+    const res = await this.service.fetchUsers(this.ctx.query);
     this.ctx.ok(res);
   }
 

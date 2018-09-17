@@ -1,11 +1,11 @@
 'use strict';
 
 const assert = require('assert');
-const is = require('is-type-of');
+const _ = require('lodash');
 const { BusinessError, ErrorCode } = require('naf-core').Error;
 const { NafService } = require('naf-framework-mongoose/lib/service');
 
-const INFO_FULL = 'userid name mobile department order position gender email isleader enable telephone attrs status';
+const INFO_FULL = 'userid name mobile department order position gender email telephone attrs status';
 const INFO_SIMPLE = 'userid name';
 
 class UserinfoService extends NafService {
@@ -62,6 +62,9 @@ class UserinfoService extends NafService {
   }
 
   async delete(userid) {
+    if (userid === 'admin') {
+      throw new BusinessError(ErrorCode.SERVICE_FAULT, '系统管理员不能删除');
+    }
     await this.model.deleteOne({ userid }).exec();
   }
 
@@ -81,11 +84,36 @@ class UserinfoService extends NafService {
   async passwd(userid, update) {
     assert(userid);
     assert(update);
-    if (is.string(update)) update = { newpass: update };
-    const { newpass: password, retry } = update;
-    return await this.model.update({ userid }, { password, retry }).exec();
+    if (_.isString(update)) update = { newpass: update };
+    const { newpass } = update;
+
+    const entity = await this.model.findOne({ userid }).exec();
+    if (!entity) throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
+    if (entity.passwd) {
+      entity.passwd.secret = newpass;
+    } else {
+      entity.passwd = { secret: newpass };
+    }
+    await entity.save();
+
+    // await this.model.update({ userid }, { $set: { passwd: { mech: 'plain', secret: newpass } } }, { new: true }).exec();
   }
 
+  async login({ username, password }) {
+    // TODO:参数检查和默认参数处理
+    assert(username);
+    assert(password);
+
+    // TODO:检查useridh和mobile
+    const entity = await this.model.findOne({ userid: username }).exec();
+    if (!entity) {
+      throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
+    }
+    if (!entity.passwd || entity.passwd.secret !== password) {
+      throw new BusinessError(ErrorCode.BAD_PASSWORD);
+    }
+    return _.pick(entity, INFO_FULL.split(' '));
+  }
 }
 
 module.exports = UserinfoService;

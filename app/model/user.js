@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * 用户账号（多租户）
+ */
 const { RequiredString, NullableString } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;
 
@@ -13,9 +16,16 @@ const accountSchema = new Schema({
 }, { timestamps: true });
 accountSchema.index({ type: 1, account: 1 });
 
+// 密码
+const secretSchema = new Schema({
+  // 加密类型：plain、hash、encrypt等
+  mech: { type: String, required: true, maxLength: 64, default: 'plain' },
+  // 密码值
+  secret: { type: String, required: true, maxLength: 128 },
+}, { _id: false, timestamps: true });
+
 const SchemaDefine = {
   userid: RequiredString(64),
-  password: NullableString(128),
   name: RequiredString(64),
   gender: NullableString(64),
   mobile: NullableString(64),
@@ -26,6 +36,7 @@ const SchemaDefine = {
   department: [ Number ],
   order: [ Number ],
   attrs: Object,
+  passwd: secretSchema,
   // 绑定账号信息
   accounts: {
     type: [ accountSchema ],

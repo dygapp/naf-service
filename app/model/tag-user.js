@@ -1,18 +1,18 @@
 'use strict';
 /**
- * 标签（非多租户）
+ * 标签用户（多租户）
  */
-const { RequiredString } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;
 
 const SchemaDefine = {
   tagid: { type: Number, required: true, index: true },
-  tagname: RequiredString(64),
+  userlist: [ String ],
+  partylist: [ Number ],
 };
-const schema = new Schema(SchemaDefine, { timestamps: true });
+const schema = new Schema(SchemaDefine, { timestamps: true, 'multi-tenancy': true });
 schema.index({ tagid: 1 });
 schema.index({ tagname: 1 });
 module.exports = app => {
   const { mongoose } = app;
-  return mongoose.model('Tag', schema, 'naf_tag');
+  return mongoose.model('TagUser', schema, 'naf_tag_user');
 };

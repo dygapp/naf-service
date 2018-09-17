@@ -12,6 +12,14 @@ class UserController extends Controller {
   }
 
   // POST 创建成员
+  async login() {
+    const { ctx } = this;
+    const res = await this.service.login(ctx.request.body);
+    ctx.logger.debug(`login result: ${res}`);
+    this.ctx.ok({ userinfo: res });
+  }
+
+  // POST 创建成员
   async create() {
     const { ctx } = this;
     const res = await this.service.create(ctx.request.body);
@@ -74,7 +82,8 @@ class UserController extends Controller {
     let { userid } = ctx.query;
     const { newpass } = ctx.request.body;
     if (!userid) userid = ctx.request.body.userid;
-    ctx.body = await this.service.passwd(userid, newpass);
+    await this.service.passwd(userid, newpass);
+    this.ctx.ok('updated');
   }
 }
 
