@@ -16,15 +16,15 @@ class UnitController extends Controller {
 
   // POST 更新单位名字
   async update() {
-    const { unitid } = this.ctx.query;
-    const res = await this.service.update(unitid, this.ctx.request.body);
+    const { code } = this.ctx.query;
+    const res = await this.service.update(code, this.ctx.request.body);
     this.ctx.ok('updated', { data: res });
   }
 
   // GET 删除单位
   async delete() {
-    const { unitid } = this.ctx.query;
-    await this.service.delete(unitid);
+    const { code } = this.ctx.query;
+    await this.service.delete(code);
     this.ctx.ok();
   }
 
@@ -34,24 +34,29 @@ class UnitController extends Controller {
     this.ctx.ok({ data: res });
   }
 
-  // GET 获取单位成员
   async fetch() {
-    const { unitid } = this.ctx.query;
-    const res = await this.service.fetchUsers(unitid);
-    this.ctx.ok(res);
+    const { code } = this.ctx.query;
+    const res = await this.service.fetch(code);
+    this.ctx.ok({ data: res });
+  }
+
+  // GET 获取单位成员
+  async fetchUsers() {
+    const { unitcode } = this.ctx.query;
+    const res = await this.service.fetchUsers(unitcode);
+    this.ctx.ok({ data: res });
   }
 
   // POST 增加单位成员
   async createUser() {
-    const { unitid } = this.ctx.query;
-    const res = await this.service.createUser(unitid, this.ctx.request.body);
+    const { unitcode } = this.ctx.query;
+    const res = await this.service.createUser(unitcode, this.ctx.request.body);
     this.ctx.ok('created', { data: res });
   }
 
   // GET 删除单位成员
   async deleteUser() {
-    const { unitid, userid } = this.ctx.query;
-    await this.service.deltagusers(unitid, userid);
+    await this.service.deleteUser(this.ctx.query);
     this.ctx.ok('deleted');
   }
 
@@ -59,6 +64,12 @@ class UnitController extends Controller {
   async updateUser() {
     const res = await this.service.updateUser(this.ctx.query, this.ctx.request.body);
     this.ctx.ok('updated', { data: res });
+  }
+
+  // POST 修改单位成员密码
+  async passwd() {
+    await this.service.passwd(this.ctx.query, this.ctx.request.body);
+    this.ctx.ok('updated');
   }
 }
 

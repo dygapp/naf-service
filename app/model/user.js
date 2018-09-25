@@ -22,7 +22,7 @@ const secretSchema = new Schema({
   mech: { type: String, required: true, maxLength: 64, default: 'plain' },
   // 密码值
   secret: { type: String, required: true, maxLength: 128 },
-}, { _id: false, timestamps: true });
+}, { _id: false, timestamps: true, select: false });
 
 const SchemaDefine = {
   userid: RequiredString(64),
@@ -41,7 +41,17 @@ const SchemaDefine = {
   accounts: {
     type: [ accountSchema ],
     default: [],
+    select: false,
   },
+  // 用户角色
+  role: {
+    type: String,
+    enum: [ 'super', 'admin', 'user' ],
+    default: 'user',
+    lowercase: true,
+    select: false,
+  },
+  origin: String, // 用户来源
 };
 const schema = new Schema(SchemaDefine, { timestamps: true, 'multi-tenancy': true });
 
