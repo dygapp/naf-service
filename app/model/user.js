@@ -36,7 +36,10 @@ const SchemaDefine = {
   department: [ Number ],
   order: [ Number ],
   attrs: Object,
-  passwd: secretSchema,
+  passwd: {
+    type: secretSchema,
+    select: false,
+  },
   // 绑定账号信息
   accounts: {
     type: [ accountSchema ],

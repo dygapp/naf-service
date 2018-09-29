@@ -1,6 +1,6 @@
 'use strict';
 /**
- * 标签（非多租户）
+ * 单位（非多租户）
  */
 const { RequiredString } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;

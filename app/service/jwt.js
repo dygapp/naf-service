@@ -20,7 +20,7 @@ class JwtLoginService extends NafService {
     assert(password);
 
     // TODO:检查useridh和mobile
-    const entity = await this.model.findOne({ userid: username }).exec();
+    const entity = await this.model.findOne({ userid: username }, '+passwd +role').exec();
     if (!entity) {
       throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
     }

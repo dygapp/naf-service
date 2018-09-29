@@ -87,7 +87,7 @@ class UserinfoService extends NafService {
     if (_.isString(update)) update = { newpass: update };
     const { newpass } = update;
 
-    const entity = await this.model.findOne({ userid }).exec();
+    const entity = await this.model.findOne({ userid }, '+passwd +role').exec();
     if (!entity) throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
     if (entity.passwd) {
       entity.passwd.secret = newpass;
@@ -105,7 +105,7 @@ class UserinfoService extends NafService {
     assert(password);
 
     // TODO:检查useridh和mobile
-    const entity = await this.model.findOne({ userid: username }).exec();
+    const entity = await this.model.findOne({ userid: username }, '+passwd +role').exec();
     if (!entity) {
       throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
     }

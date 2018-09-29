@@ -123,7 +123,7 @@ class TagService extends NafService {
     // TODO: 查找标签中用户
     let userlist = await this.mUser.find({ userid: { $in: entity.userlist } }, 'userid name').exec();
     // TODO: 查找所有路径节点在标签中的部门的ID
-    const partylist = await this.mDept.find({ path: { $elemMatch: { $in: entity.partylist } } }, 'id').exec().map(p => p.id);
+    const partylist = (await this.mDept.find({ path: { $elemMatch: { $in: entity.partylist } } }, 'id').exec()).map(p => p.id);
     if (partylist && partylist.length > 0) {
       // TODO: 通过部门ID查找用户
       const partyuser = await this.mUser.find({ department: { $elemMatch: { $in: partylist } } }, 'userid name').exec();
@@ -146,13 +146,13 @@ class TagService extends NafService {
       throw new BusinessError(ErrorCode.user.DATA_NOT_EXIST, '用户信息不存在');
     }
     // TODO: 查找用户所有的上级部门ID
-    const partylist = await this.mDept.find({ path: { $elemMatch: { $in: user.department } } }, 'id').exec().map(p => p.id);
+    const partylist = (await this.mDept.find({ path: { $elemMatch: { $in: user.department } } }, 'id').exec()).map(p => p.id);
     // TODO: 按部门ID和用户ID查找标签
-    let tags = await this.mTagUser.findOne({ $or: {
-      userlist: { $elemMatch: { $eq: userid } },
+    let tags = (await this.mTagUser.find({ $or: [{
+      userlist: { $elemMatch: { $eq: userid } } }, {
       partylist: { $elemMatch: { $in: partylist } },
-    } }).exec().map(p => p.tagid);
-    tags = this.model.find({ tagid: { $in: tags } }).exec().map(p => p.tagname);
+    }] }).exec()).map(p => p.tagid);
+    tags = (await this.model.find({ tagid: { $in: tags } }).exec()).map(p => p.tagname);
     return tags;
   }
 }
