@@ -9,6 +9,11 @@ const SchemaDefine = {
   id: { type: Number, required: true, index: true },
   parentid: { type: Number, required: true, index: true },
   name: RequiredString(64),
+  path: {
+    type: [ Number ],
+    default: [],
+    select: false,
+  },
   order: Number,
 };
 const schema = new Schema(SchemaDefine, { timestamps: true, 'multi-tenancy': true });

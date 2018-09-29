@@ -41,20 +41,28 @@ class TagController extends Controller {
 
   // GET 获取标签成员
   async fetch() {
-    const res = await this.service.fetchUsers(this.ctx.query);
+    const res = await this.service.fetchMembers(this.ctx.query);
     this.ctx.ok(res);
   }
 
   // POST 增加标签成员
   async addtagusers() {
-    const { tagid, userlist, partylist } = this.ctx.request.body;
+    let { tagid } = this.ctx.query;
+    if (!tagid) {
+      ({ tagid } = this.ctx.body);
+    }
+    const { userlist, partylist } = this.ctx.request.body;
     await this.service.addtagusers(tagid, userlist, partylist);
     this.ctx.ok('updated');
   }
 
   // POST 删除标签成员
   async deltagusers() {
-    const { tagid, userlist, partylist } = this.ctx.request.body;
+    let { tagid } = this.ctx.query;
+    if (!tagid) {
+      ({ tagid } = this.ctx.body);
+    }
+    const { userlist, partylist } = this.ctx.request.body;
     await this.service.deltagusers(tagid, userlist, partylist);
     this.ctx.ok('deleted');
   }

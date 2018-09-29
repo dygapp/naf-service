@@ -30,6 +30,12 @@ module.exports = appInfo => {
     },
   };
 
+  config.jwt = {
+    secret: 'Ziyouyanfa!@#',
+    expiresIn: '1h',
+    subject: 'platform',
+  };
+
   config.onerror = ErrorConfig;
 
   return config;

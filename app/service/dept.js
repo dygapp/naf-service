@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const _ = require('lodash');
 const { isNullOrUndefined, toBoolean, trimData } = require('naf-core').Util;
 const { BusinessError, ErrorCode } = require('naf-core').Error;
 const { NafService } = require('naf-framework-mongoose/lib/service');
@@ -36,13 +37,16 @@ class DepartmentService extends NafService {
     id = id || await this.nextId();
 
     // TODO: 检查上级部门是否存在
+    let path = [];
     if (parentid) {
       const entity = await this.model.findOne({ id: parentid }).exec();
       if (isNullOrUndefined(entity)) throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '上级部门不存在');
+      path = entity.path || [];
     }
+    path = path.concat(id);
 
     // TODO:保存数据
-    const res = await this.model.create({ id, name, parentid, order });
+    const res = await this.model.create({ id, name, parentid, path, order });
     return res;
   }
 
@@ -53,8 +57,22 @@ class DepartmentService extends NafService {
     const entity = await this.model.findOne({ id }).exec();
     if (isNullOrUndefined(entity)) throw new BusinessError(ErrorCode.DATA_NOT_EXIST);
 
+    let path;
+    // TODO: 检查是否包含子部门
+    if (_.isNumber(parentid) && parentid !== entity.parentid) {
+      const count = await this.model.countDocuments({ parentid: id }).exec();
+      if (count > 0) {
+        throw new BusinessError(60006, '部门下存在子部门');
+      }
+      // TODO: 检查上级部门是否存在
+      const parent = await this.model.findOne({ id: parentid }).exec();
+      if (isNullOrUndefined(parent)) throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '上级部门不存在');
+      path = parent.path || [];
+      path = path.concat(entity.id);
+    }
+
     // TODO: 修改数据
-    entity.set(trimData({ name, parentid, order }));
+    entity.set(trimData({ name, parentid, path, order }));
 
     return await entity.save();
   }

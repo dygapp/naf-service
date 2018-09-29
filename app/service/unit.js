@@ -90,7 +90,7 @@ class UnitService extends NafService {
     }
 
     // TODO:保存数据
-    const res = await model.create({ userid, name, mobile, department, order, position, gender, email, telephone, attrs, status, origin: 'master' });
+    const res = await model.create({ role: 'super', userid, name, mobile, department, order, position, gender, email, telephone, attrs, status, origin: 'master' });
     return res;
   }
 

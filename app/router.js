@@ -9,7 +9,7 @@ module.exports = app => {
   router.get('/info', controller.home.info);
 
   // 开放接口
-  router.all('/api/login', controller.user.login);
+  router.all('/api/login', controller.jwt.login);
   router.get('/api/unit/list', controller.unit.list);
   router.get('/api/unit/fetch', controller.unit.fetch);
 
@@ -37,7 +37,7 @@ module.exports = app => {
   router.post('/tag/update', controller.tag.update);
   router.get('/tag/delete', controller.tag.delete);
   router.get('/tag/list', controller.tag.list);
-  router.get('/tag/get', controller.tag.fetch);
+  router.get('/tag/fetch', controller.tag.fetch);
   router.post('/tag/addtagusers', controller.tag.addtagusers);
   router.post('/tag/deltagusers', controller.tag.deltagusers);
 
