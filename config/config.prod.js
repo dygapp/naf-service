@@ -13,10 +13,11 @@ module.exports = () => {
   config.mongoose = {
     url: 'mongodb://localhost:27018/naf',
     options: {
-      useNewUrlParser: true,
       user: 'root',
       pass: 'Ziyouyanfa#@!',
       authSource: 'admin',
+      useNewUrlParser: true,
+      useCreateIndex: true,
     },
   };
 
