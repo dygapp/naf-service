@@ -9,7 +9,9 @@ module.exports = app => {
   router.get('/info', controller.home.info);
 
   // 开放接口
-  router.all('/api/login', controller.jwt.login);
+  router.post('/api/login', controller.login.login);
+  router.post('/api/passwd', controller.login.passwd);
+  router.get('/api/qrcode', controller.weixin.qrcode);
   router.get('/api/unit/list', controller.unit.list);
   router.get('/api/unit/fetch', controller.unit.fetch);
 
@@ -51,6 +53,13 @@ module.exports = app => {
   router.get('/unit/delete_user', controller.unit.deleteUser);
   router.get('/unit/list_user', controller.unit.fetchUsers);
   router.post('/unit/passwd', controller.unit.passwd);
+
+  // 微信登录相关接口
+  router.post('/weixin/bind', controller.weixin.bind);
+  router.post('/weixin/login', controller.weixin.login);
+  router.post('/weixin/check', controller.weixin.check);
+  router.post('/weixin/unbind', controller.weixin.unbind);
+  router.get('/weixin/fetch', controller.weixin.fetch);
 
   // TODO: 自动配置路由,将所有以‘Action’结尾的方法自动进行路由注册
   Object.keys(app.controller).forEach(key => {

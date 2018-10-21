@@ -85,6 +85,7 @@ class UserController extends Controller {
     await this.service.passwd(userid, newpass);
     this.ctx.ok('updated');
   }
+
 }
 
 module.exports = UserController;

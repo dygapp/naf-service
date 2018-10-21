@@ -3,6 +3,7 @@
 const assert = require('assert');
 const _ = require('lodash');
 const { BusinessError, ErrorCode } = require('naf-core').Error;
+const { trimData } = require('naf-core').Util;
 const { NafService } = require('naf-framework-mongoose/lib/service');
 
 const INFO_FULL = 'userid name mobile department order position gender email telephone attrs status';
@@ -99,20 +100,51 @@ class UserinfoService extends NafService {
     // await this.model.update({ userid }, { $set: { passwd: { mech: 'plain', secret: newpass } } }, { new: true }).exec();
   }
 
-  async login({ username, password }) {
+  // 绑定用户微信号
+  async bind({ _id, userid, openid }) {
     // TODO:参数检查和默认参数处理
-    assert(username);
-    assert(password);
+    assert(_id || userid, '—id和userid必须有一项');
+    assert(openid, '微信ID不能为空');
 
-    // TODO:检查useridh和mobile
-    const entity = await this.model.findOne({ userid: username }, '+passwd +role').exec();
+    // TODO:检查用户密码
+    const entity = await this.model.findOne(trimData({ _id, userid }), '+passwd +weixin').exec();
     if (!entity) {
       throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
     }
-    if (!entity.passwd || entity.passwd.secret !== password) {
-      throw new BusinessError(ErrorCode.BAD_PASSWORD);
+
+    if (entity.weixin && entity.weixin.bind === '1') {
+      const msg = entity.weixin.account === openid ? '用户已绑定该微信号，不用重复绑定' : '用户已绑定其他微信号';
+      throw new BusinessError(ErrorCode.SERVICE_FAULT, msg);
     }
-    return _.pick(entity, INFO_FULL.split(' '));
+
+    if (entity.weixin === undefined) {
+      entity.weixin = { type: 'weixin' };
+    }
+    entity.weixin.account = openid;
+    entity.weixin.bind = '1';
+    await entity.save();
+  }
+
+  // 按照用户id或微信ID解除微信绑定
+  async unbind({ userid, openid }) {
+    // TODO:参数检查和默认参数处理，userid为空是使用openid
+    assert(userid || openid, '用户ID和微信ID不能都为空');
+
+    // TODO:检查用户信息
+    let query = { userid };
+    if (!userid) query = { 'weixin.account': openid };
+    const entity = await this.model.findOne(query, '+weixin').exec();
+    if (!userid && !entity) {
+      throw new BusinessError(ErrorCode.USER_NOT_BIND, '该微信号未绑定用户');
+    }
+    if (!entity) {
+      throw new BusinessError(ErrorCode.USER_NOT_EXIST, '用户不存在');
+    }
+
+    if (entity.weixin) {
+      entity.weixin.bind = '2';
+      await entity.save();
+    }
   }
 }
 

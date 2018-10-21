@@ -19,17 +19,6 @@ module.exports = appInfo => {
     },
   };
 
-  // mongoose config
-  config.mongoose = {
-    url: 'mongodb://localhost:27017/naf',
-    options: {
-      useNewUrlParser: true,
-      user: 'root',
-      pass: 'Ziyouyanfa#@!',
-      authSource: 'admin',
-    },
-  };
-
   config.jwt = {
     secret: 'Ziyouyanfa!@#',
     expiresIn: '1h',

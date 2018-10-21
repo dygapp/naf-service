@@ -40,10 +40,9 @@ const SchemaDefine = {
     type: secretSchema,
     select: false,
   },
-  // 绑定账号信息
-  accounts: {
-    type: [ accountSchema ],
-    default: [],
+  // 绑定微信信息
+  weixin: {
+    type: accountSchema,
     select: false,
   },
   // 用户角色
