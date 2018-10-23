@@ -58,13 +58,13 @@ class JwtLoginService extends NafService {
     // TODO:检查用户
     const entity = await this.model.findOne({ userid }, '+role').exec();
     if (!entity) {
-      throw new BusinessError(ErrorCode.DATA_NOT_EXIST, '用户不存在');
+      throw new BusinessError(ErrorCode.USER_NOT_EXIST, '用户不存在');
     }
     const tags = await this.tag.fetchUserTag(entity);
-    const userinfo = _.pick(entity, [ 'userid', 'name', 'role' ]);
+    const userinfo = _.pick(entity, [ 'name', 'role' ]);
     userinfo.tags = tags;
-    const { secret, expiresIn = '1h', subject = 'naf' } = this.config.jwt;
-    const token = await jwt.sign(userinfo, secret, { expiresIn, issuer: this.tenant, subject });
+    const { secret, expiresIn = '1h', issuer = 'naf' } = this.config.jwt;
+    const token = await jwt.sign(userinfo, secret, { expiresIn, issuer, subject: `${userid}@${this.tenant}` });
     return { userinfo, token };
   }
 

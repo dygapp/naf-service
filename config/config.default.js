@@ -22,7 +22,7 @@ module.exports = appInfo => {
   config.jwt = {
     secret: 'Ziyouyanfa!@#',
     expiresIn: '1h',
-    subject: 'platform',
+    issuer: 'platform',
   };
 
   config.onerror = ErrorConfig;
