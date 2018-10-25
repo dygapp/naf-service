@@ -11,14 +11,7 @@ module.exports = () => {
 
   // mongoose config
   config.mongoose = {
-    url: 'mongodb://localhost:27017/naf',
-    options: {
-      user: 'root',
-      pass: 'Ziyouyanfa#@!',
-      authSource: 'admin',
-      useNewUrlParser: true,
-      useCreateIndex: true,
-    },
+    url: 'mongodb://192.168.18.100:27018/naf',
   };
 
   // mq config
@@ -42,6 +35,7 @@ module.exports = () => {
       db: 0,
     },
   };
+
   config.logger = {
     consoleLevel: 'DEBUG',
   };

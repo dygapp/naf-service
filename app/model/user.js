@@ -2,7 +2,7 @@
 /**
  * 用户账号（多租户）
  */
-const { RequiredString, NullableString } = require('naf-framework-mongoose/lib/model/schema');
+const { RequiredString, NullableString, Secret } = require('naf-framework-mongoose/lib/model/schema');
 const Schema = require('mongoose').Schema;
 
 // 绑定账号
@@ -15,14 +15,6 @@ const accountSchema = new Schema({
   bind: { type: String, required: true, maxLength: 64, default: '0' },
 }, { timestamps: true });
 accountSchema.index({ type: 1, account: 1 });
-
-// 密码
-const secretSchema = new Schema({
-  // 加密类型：plain、hash、encrypt等
-  mech: { type: String, required: true, maxLength: 64, default: 'plain' },
-  // 密码值
-  secret: { type: String, required: true, maxLength: 128 },
-}, { _id: false, timestamps: true, select: false });
 
 const SchemaDefine = {
   userid: RequiredString(64),
@@ -37,7 +29,7 @@ const SchemaDefine = {
   order: [ Number ],
   attrs: Object,
   passwd: {
-    type: secretSchema,
+    type: Secret,
     select: false,
   },
   // 绑定微信信息

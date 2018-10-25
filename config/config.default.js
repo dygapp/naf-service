@@ -27,5 +27,17 @@ module.exports = appInfo => {
 
   config.onerror = ErrorConfig;
 
+  // mongoose config
+  config.mongoose = {
+    url: 'mongodb://localhost:27017/naf',
+    options: {
+      user: 'root',
+      pass: 'Ziyouyanfa#@!',
+      authSource: 'admin',
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    },
+  };
+
   return config;
 };
