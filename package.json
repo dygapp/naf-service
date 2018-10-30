@@ -10,7 +10,7 @@
     "egg-naf-amqp": "0.0.13",
     "egg-redis": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
-    "naf-framework-mongoose": "^0.4.21",
+    "naf-framework-mongoose": "^0.4.22",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

@@ -3,12 +3,6 @@
 module.exports = () => {
   const config = exports = {};
 
-  config.cluster = {
-    listen: {
-      port: 8001,
-    },
-  };
-
   // mongoose config
   config.mongoose = {
     url: 'mongodb://192.168.18.100:27018/naf',
@@ -17,22 +11,14 @@ module.exports = () => {
   // mq config
   config.amqp = {
     client: {
-      hostname: '127.0.0.1',
-      username: 'smart',
-      password: 'smart123',
-      vhost: 'smart',
+      hostname: '192.168.18.100',
     },
-    app: true,
-    agent: true,
   };
 
   // redis config
   config.redis = {
     client: {
-      port: 6379, // Redis port
-      host: '127.0.0.1', // Redis host
-      password: null,
-      db: 0,
+      host: '192.168.18.100', // Redis host
     },
   };
 
