@@ -10,7 +10,7 @@
     "egg-naf-amqp": "0.0.13",
     "egg-redis": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
-    "naf-framework-mongoose": "^0.5.1",
+    "naf-framework-mongoose": "^0.5.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -36,7 +36,8 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "pm2": "pm2 start server.js --name=naf-user"
+    "pm2": "pm2 start server.js --name=naf-user",
+    "restart": "pm2 restart naf-user"
   },
   "ci": {
     "version": "8"
