@@ -29,5 +29,9 @@ module.exports = () => {
     consoleLevel: 'DEBUG',
   };
 
+  config.jwt = {
+    expiresIn: '1d',
+  };
+
   return config;
 };

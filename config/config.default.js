@@ -21,7 +21,7 @@ module.exports = appInfo => {
 
   config.jwt = {
     secret: 'Ziyouyanfa!@#',
-    expiresIn: '1h',
+    expiresIn: '2h',
     issuer: 'platform',
   };
 
