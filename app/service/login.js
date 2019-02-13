@@ -112,7 +112,7 @@ class JwtLoginService extends NafService {
    */
   async createQrcode() {
     const qrcode = uuid();
-    const key = `smart:qrcode:login:${qrcode}`;
+    const key = `naf:qrcode:login:${qrcode}`;
     await this.app.redis.set(key, 'pending', 'EX', 600);
     return qrcode;
   }
@@ -123,7 +123,7 @@ class JwtLoginService extends NafService {
   async scanQrcode({ qrcode, openid }) {
     assert(qrcode, 'qrcode不能为空');
     assert(openid, 'openid不能为空');
-    const key = `smart:qrcode:login:${qrcode}`;
+    const key = `naf:qrcode:login:${qrcode}`;
     const status = await this.app.redis.get(key);
     if (!status) {
       throw new BusinessError(ErrorCode.SERVICE_FAULT, '二维码已过期');
@@ -149,7 +149,7 @@ class JwtLoginService extends NafService {
   // 使用二维码换取登录凭证
   async qrcodeLogin(qrcode) {
     assert(qrcode, 'qrcode不能为空');
-    const key = `smart:qrcode:login:${qrcode}`;
+    const key = `naf:qrcode:login:${qrcode}`;
     const val = await this.app.redis.get(key);
     if (!val) {
       throw new BusinessError(ErrorCode.SERVICE_FAULT, '二维码已过期');
@@ -168,7 +168,7 @@ class JwtLoginService extends NafService {
   // 检查二维码状态
   async checkQrcode(qrcode) {
     assert(qrcode, 'qrcode不能为空');
-    const key = `smart:qrcode:login:${qrcode}`;
+    const key = `naf:qrcode:login:${qrcode}`;
     const val = await this.app.redis.get(key);
     if (!val) {
       throw new BusinessError(ErrorCode.SERVICE_FAULT, '二维码已过期');
