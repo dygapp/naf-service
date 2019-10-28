@@ -11,7 +11,7 @@ module.exports = {
       'app', 'config',
     ],
     env: {
-      NODE_ENV: 'production', // 环境参数，当前指定为生产环境
+      NODE_ENV: process.env.NODE_ENV || 'production', // 环境参数，当前指定为生产环境
     },
   }],
 };
